@@ -39,4 +39,4 @@ auth.json
 /.vscode
 
 CLAUDE.md
-compose.yaml
+docker-compose.yml

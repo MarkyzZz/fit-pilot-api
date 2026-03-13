@@ -1,0 +1,78 @@
+services:
+    fp-api:
+        container_name: fp-api
+        build:
+            context: ./docker/8.4
+            dockerfile: Dockerfile
+            args:
+                WWWUSER: '${WWWUSER}'
+                WWWGROUP: '${WWWGROUP}'
+        image: 'fit-pilot:latest'
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
+        ports:
+            - '${APP_PORT:-80}:80'
+            - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
+        environment:
+            WWWUSER: '${WWWUSER}'
+            IGNITION_LOCAL_SITES_PATH: '${PWD}'
+        volumes:
+            - '.:/var/www/html'
+        networks:
+            - fp
+        depends_on:
+            - fp-pgsql
+            - fp-redis
+            - fp-mailpit
+
+    fp-pgsql:
+        container_name: fp-pgsql
+        image: 'postgres:16'
+        ports:
+            - '${FORWARD_DB_PORT:-5432}:5432'
+        environment:
+            PGPASSWORD: '${DB_PASSWORD:-secret}'
+            POSTGRES_DB: '${DB_DATABASE:-laravel}'
+            POSTGRES_USER: '${DB_USERNAME:-sail}'
+            POSTGRES_PASSWORD: '${DB_PASSWORD:-secret}'
+        volumes:
+            - 'fp-pgsql:/var/lib/postgresql/data'
+        networks:
+            - fp
+        healthcheck:
+            test: ['CMD', 'pg_isready', '-q', '-d', '${DB_DATABASE:-laravel}', '-U', '${DB_USERNAME:-sail}']
+            retries: 3
+            timeout: 5s
+
+    fp-redis:
+        container_name: fp-redis
+        image: 'redis:alpine'
+        ports:
+            - '${FORWARD_REDIS_PORT:-6379}:6379'
+        volumes:
+            - 'fp-redis:/data'
+        networks:
+            - fp
+        healthcheck:
+            test: ['CMD', 'redis-cli', 'ping']
+            retries: 3
+            timeout: 5s
+
+    fp-mailpit:
+        container_name: fp-mailpit
+        image: 'axllent/mailpit:latest'
+        ports:
+            - '${FORWARD_MAILPIT_PORT:-1025}:1025'
+            - '${FORWARD_MAILPIT_DASHBOARD_PORT:-8025}:8025'
+        networks:
+            - fp
+
+networks:
+    fp:
+        driver: bridge
+
+volumes:
+    fp-pgsql:
+        driver: local
+    fp-redis:
+        driver: local
