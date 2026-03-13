@@ -3,5 +3,5 @@
 if [ $# -gt 0 ]; then
     exec "$@"
 else
-    exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
+    exec su-exec root /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
 fi

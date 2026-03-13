@@ -71,6 +71,7 @@ RUN apk add --no-cache postgresql16-client
 # ──────────────────────────────────────────────
 RUN setcap "cap_net_bind_service=+ep" /usr/bin/php84
 
+
 # ──────────────────────────────────────────────
 # Create fp user + composer cache dir
 # ──────────────────────────────────────────────
@@ -79,6 +80,8 @@ RUN addgroup -g ${WWWGROUP} fp \
     && mkdir -p /.composer && chmod -R ugo+rw /.composer \
     && mkdir -p /var/log/supervisor \
     && git config --global --add safe.directory /var/www/html
+
+RUN chmod u+s /sbin/su-exec
 
 # ──────────────────────────────────────────────
 # Config files
@@ -91,3 +94,6 @@ RUN chmod 755 /usr/local/bin/start-container
 EXPOSE 80/tcp
 
 ENTRYPOINT ["start-container"]
+
+USER fp
+
