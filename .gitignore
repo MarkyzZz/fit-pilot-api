@@ -37,3 +37,6 @@ auth.json
 /.fleet
 /.idea
 /.vscode
+
+CLAUDE.md
+compose.yaml
