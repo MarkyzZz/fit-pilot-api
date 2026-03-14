@@ -25,3 +25,8 @@ Thumbs.db
 
 CLAUDE.md
 docker-compose.yml
+
+boost.json
+.mcp.json
+/.ai
+/.claude
