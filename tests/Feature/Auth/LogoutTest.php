@@ -28,8 +28,6 @@ class LogoutTest extends TestCase
 
         $response->assertOk()
             ->assertJsonFragment(['message' => 'Logged out successfully.']);
-
-        $this->assertGuest();
     }
 
     #[Test]

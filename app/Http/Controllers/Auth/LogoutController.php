@@ -12,7 +12,7 @@ class LogoutController extends Controller
 {
     public function __invoke(Request $request): JsonResponse
     {
-        Auth::logout();
+        Auth::guard('web')->logout();
 
         if ($request->hasSession()) {
             $request->session()->invalidate();
