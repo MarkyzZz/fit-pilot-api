@@ -18,7 +18,9 @@ class LoginController extends Controller
             ], Response::HTTP_UNAUTHORIZED);
         }
 
-        $request->session()->regenerate();
+        if ($request->hasSession()) {
+            $request->session()->regenerate();
+        }
 
         return response()->json($request->user());
     }
