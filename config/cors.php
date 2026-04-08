@@ -10,7 +10,7 @@ return [
 
     'allowed_origins_patterns' => [],
 
-    'allowed_headers' => ['Content-Type', 'X-Requested-With', 'Authorization', 'Accept'],
+    'allowed_headers' => ['Content-Type', 'X-Requested-With', 'Authorization', 'Accept', 'X-XSRF-TOKEN'],
 
     'exposed_headers' => [],
 
