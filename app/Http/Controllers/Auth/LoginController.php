@@ -16,7 +16,7 @@ class LoginController extends Controller
     {
     }
 
-    public function __invoke(LoginRequest $request): JsonResponse
+    public function __invoke(LoginRequest $request): AuthResource|JsonResponse
     {
         if (! Auth::attempt($request->safe(['email', 'password']))) {
             return $this->response->json([
