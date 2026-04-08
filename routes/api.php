@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,8 +27,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('logout', LogoutController::class)->name('logout');
     });
 
-    Route::get('user', function (Request $request) {
-        return response()->json($request->user());
-    })->name('user');
+    Route::get('whoami', AuthController::class)->name('whoami');
 
 });

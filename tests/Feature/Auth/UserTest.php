@@ -24,10 +24,10 @@ class UserTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)
-            ->getJson(route('user'));
+            ->getJson(route('whoami'));
 
         $response->assertOk()
-            ->assertJsonStructure(['id', 'name', 'email'])
+            ->assertJsonStructure(['data' => ['id', 'name', 'email']])
             ->assertJsonFragment([
                 'id'    => $user->id,
                 'email' => $user->email,
@@ -37,7 +37,7 @@ class UserTest extends TestCase
     #[Test]
     public function unauthenticated_user_cannot_fetch_profile(): void
     {
-        $response = $this->getJson(route('user'));
+        $response = $this->getJson(route('whoami'));
 
         $response->assertUnauthorized();
     }
@@ -48,9 +48,9 @@ class UserTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)
-            ->getJson(route('user'));
+            ->getJson(route('whoami'));
 
         $response->assertOk()
-            ->assertJsonMissingPath('password');
+            ->assertJsonMissingPath('data.password');
     }
 }
