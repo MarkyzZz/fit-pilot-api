@@ -33,14 +33,14 @@ services:
         environment:
             PGPASSWORD: '${DB_PASSWORD:-secret}'
             POSTGRES_DB: '${DB_DATABASE:-laravel}'
-            POSTGRES_USER: '${DB_USERNAME:-sail}'
+            POSTGRES_USER: '${DB_USERNAME:-fp}'
             POSTGRES_PASSWORD: '${DB_PASSWORD:-secret}'
         volumes:
             - 'fp-pgsql:/var/lib/postgresql/data'
         networks:
             - fp
         healthcheck:
-            test: ['CMD', 'pg_isready', '-q', '-d', '${DB_DATABASE:-laravel}', '-U', '${DB_USERNAME:-sail}']
+            test: [ 'CMD', 'pg_isready', '-q', '-d', '${DB_DATABASE:-fitpilot}', '-U', '${DB_USERNAME:-fp}' ]
             retries: 3
             timeout: 5s
 
