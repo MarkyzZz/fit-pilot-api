@@ -6,8 +6,6 @@ ARG WWWUSER=1001
 WORKDIR /var/www/html
 
 ENV TZ=UTC
-ENV SUPERVISOR_PHP_COMMAND="/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan serve --host=0.0.0.0 --port=80"
-ENV SUPERVISOR_PHP_USER="fp"
 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
@@ -18,13 +16,15 @@ RUN apk add --no-cache \
     bash curl ca-certificates git zip unzip \
     sqlite supervisor su-exec libcap shadow nano \
     icu-libs libzip libpq libxml2 oniguruma \
-    freetype libjpeg-turbo libpng libgd
+    freetype libjpeg-turbo libpng libgd \
+    nginx
 
 # ──────────────────────────────────────────────
 # PHP 8.4 — only what's needed
 # ──────────────────────────────────────────────
 RUN apk add --no-cache \
     php84 \
+    php84-fpm \
     php84-pgsql \
     php84-pdo \
     php84-pdo_pgsql \
@@ -67,12 +67,6 @@ RUN apk add --no-cache nodejs npm \
 RUN apk add --no-cache postgresql16-client
 
 # ──────────────────────────────────────────────
-# Allow PHP to bind to port 80
-# ──────────────────────────────────────────────
-RUN setcap "cap_net_bind_service=+ep" /usr/bin/php84
-
-
-# ──────────────────────────────────────────────
 # Create fp user + composer cache dir
 # ──────────────────────────────────────────────
 RUN addgroup -g ${WWWGROUP} fp \
@@ -89,6 +83,8 @@ RUN chmod u+s /sbin/su-exec
 COPY start-container /usr/local/bin/start-container
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY php.ini /etc/php84/conf.d/99-fp.ini
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY php-fpm.conf /etc/php84/php-fpm.d/www.conf
 RUN chmod 755 /usr/local/bin/start-container
 
 EXPOSE 80/tcp
@@ -96,4 +92,3 @@ EXPOSE 80/tcp
 ENTRYPOINT ["start-container"]
 
 USER fp
-
