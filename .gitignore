@@ -30,3 +30,4 @@ boost.json
 .mcp.json
 /.ai
 /.claude
+/.agents
