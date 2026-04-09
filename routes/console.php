@@ -2,4 +2,6 @@
 
 use Illuminate\Support\Facades\Schedule;
 
-Schedule::command('telescope:prune')->daily();
+if (app()->environment('local')) {
+    Schedule::command('telescope:prune')->daily();
+}
