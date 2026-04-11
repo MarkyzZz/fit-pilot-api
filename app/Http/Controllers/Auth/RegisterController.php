@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Resources\AuthResource;
 use App\Models\User;
+use App\Notifications\VerifyEmailNotification;
 
 class RegisterController extends Controller
 {
