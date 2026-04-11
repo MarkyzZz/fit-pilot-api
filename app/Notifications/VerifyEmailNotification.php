@@ -18,7 +18,7 @@ final class VerifyEmailNotification extends VerifyEmail
     protected function verificationUrl(mixed $notifiable): string
     {
         $backendUrl = URL::temporarySignedRoute(
-            'verification.verify',
+            'user.verify',
             Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)),
             [
                 'id' => $notifiable->getKey(),
