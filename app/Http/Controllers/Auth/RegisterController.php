@@ -18,8 +18,6 @@ class RegisterController extends Controller
     {
         $user = User::create($request->validated());
 
-        $user->notify(new VerifyEmailNotification);
-
         return AuthResource::make($user);
     }
 }
