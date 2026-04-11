@@ -5,7 +5,6 @@ namespace Tests\Feature\Auth;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
-use App\Notifications\VerifyEmailNotification;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 

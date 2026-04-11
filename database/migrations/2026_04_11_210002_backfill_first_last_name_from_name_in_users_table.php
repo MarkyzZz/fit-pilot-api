@@ -1,12 +1,19 @@
 <?php
 
+use Database\Migrations\Concerns\SkipsOnSqlite;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
+    use SkipsOnSqlite;
+
     public function up(): void
     {
+        if ($this->isSqlite()) {
+            return;
+        }
+
         DB::table('users')->whereNotNull('name')->update([
             'first_name' => DB::raw("split_part(name, ' ', 1)"),
             'last_name' => DB::raw("nullif(trim(substring(name from position(' ' in name))), '')"),
@@ -15,6 +22,10 @@ return new class extends Migration
 
     public function down(): void
     {
+        if ($this->isSqlite()) {
+            return;
+        }
+
         DB::table('users')->update([
             'name' => DB::raw("first_name || ' ' || coalesce(last_name, '')"),
         ]);
