@@ -29,9 +29,13 @@ class VerifyEmailTest extends TestCase
             ->getJson($this->verificationUrl($user));
 
         $response->assertOk()
-            ->assertJson(['message' => 'Email verified successfully.']);
+            ->assertJsonFragment([
+                'id' => $user->id,
+                'email' => $user->email,
+            ]);
 
         $this->assertNotNull($user->fresh()->email_verified_at);
+        $this->assertAuthenticatedAs($user);
     }
 
     #[Test]
@@ -43,7 +47,12 @@ class VerifyEmailTest extends TestCase
             ->getJson($this->verificationUrl($user));
 
         $response->assertOk()
-            ->assertJson(['message' => 'Email verified successfully.']);
+            ->assertJsonFragment([
+                'id' => $user->id,
+                'email' => $user->email,
+            ]);
+
+        $this->assertAuthenticatedAs($user);
     }
 
     #[Test]

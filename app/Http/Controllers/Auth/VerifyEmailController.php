@@ -1,19 +1,24 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\AuthResource;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 
-final class VerifyEmailController extends Controller
+class VerifyEmailController extends Controller
 {
-    public function __invoke(EmailVerificationRequest $request): JsonResponse
+    public function __invoke(EmailVerificationRequest $request): AuthResource
     {
         $request->fulfill();
 
-        return response()->json(['message' => 'Email verified successfully.']);
+        Auth::guard('web')->login($request->user());
+
+        if ($request->hasSession()) {
+            $request->session()->regenerate();
+        }
+
+        return AuthResource::make($request->user());
     }
 }
