@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
-use App\Notifications\VerifyEmailNotification;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -15,7 +15,7 @@ class RegisterController extends Controller
     {
         $user = User::create($request->validated());
 
-        $user->notify(new VerifyEmailNotification);
+        event(new Registered($user));
 
         return response()->json([
             'message' => 'Registration successful. Please check your email to verify your account.'
