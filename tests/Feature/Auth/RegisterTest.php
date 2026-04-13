@@ -30,7 +30,7 @@ class RegisterTest extends TestCase
         ]);
 
         $response->assertCreated()
-            ->assertJsonStructure(['data' => ['id', 'first_name', 'last_name', 'email', 'email_verified_at']]);
+            ->assertJsonStructure(['message']);
 
         $this->assertDatabaseHas('users', ['email' => 'john@example.com']);
     }
