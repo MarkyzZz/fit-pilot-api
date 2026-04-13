@@ -3,9 +3,9 @@
 namespace Tests\Feature\Auth;
 
 use App\Models\User;
-use App\Notifications\VerifyEmailNotification;
+use Event;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Notification;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -16,7 +16,7 @@ class RegisterTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        Notification::fake();
+        Event::fake();
     }
 
     #[Test]
@@ -37,7 +37,7 @@ class RegisterTest extends TestCase
     }
 
     #[Test]
-    public function verification_email_is_sent_after_registration(): void
+    public function registered_event_is_dispatched_after_registration(): void
     {
         $this->postJson(route('auth.register'), [
             'first_name' => 'John',
@@ -47,9 +47,7 @@ class RegisterTest extends TestCase
             'password_confirmation' => 'Secret123',
         ]);
 
-        $user = User::where('email', 'john@example.com')->first();
-
-        Notification::assertSentTo($user, VerifyEmailNotification::class);
+        Event::assertDispatched(Registered::class);
     }
 
     #[Test]
