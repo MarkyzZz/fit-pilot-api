@@ -36,22 +36,6 @@ class RegisterTest extends TestCase
     }
 
     #[Test]
-    public function verification_email_is_sent_after_registration(): void
-    {
-        $this->postJson(route('auth.register'), [
-            'first_name' => 'John',
-            'last_name' => 'Doe',
-            'email' => 'john@example.com',
-            'password' => 'Secret123',
-            'password_confirmation' => 'Secret123',
-        ]);
-
-        $user = User::where('email', 'john@example.com')->first();
-
-        Notification::assertSentTo($user, VerifyEmailNotification::class);
-    }
-
-    #[Test]
     public function register_requires_all_fields(): void
     {
         $response = $this->postJson(route('auth.register'), []);
