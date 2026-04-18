@@ -19,7 +19,7 @@ Route::prefix('auth')->name('auth.')->group(function () {
 });
 
 Route::get('/email/verify/{id}/{hash}', VerifyEmailController::class)
-    ->middleware(['auth:sanctum', 'signed'])
+    ->middleware('signed')
     ->name('user.verify');
 
 /*

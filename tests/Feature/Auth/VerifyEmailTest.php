@@ -25,8 +25,7 @@ class VerifyEmailTest extends TestCase
     {
         $user = User::factory()->unverified()->create();
 
-        $response = $this->actingAs($user)
-            ->getJson($this->verificationUrl($user));
+        $response = $this->getJson($this->verificationUrl($user));
 
         $response->assertOk()
             ->assertJsonFragment([
@@ -43,8 +42,7 @@ class VerifyEmailTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)
-            ->getJson($this->verificationUrl($user));
+        $response = $this->getJson($this->verificationUrl($user));
 
         $response->assertOk()
             ->assertJsonFragment([
@@ -53,16 +51,6 @@ class VerifyEmailTest extends TestCase
             ]);
 
         $this->assertAuthenticatedAs($user);
-    }
-
-    #[Test]
-    public function unauthenticated_user_cannot_verify_email(): void
-    {
-        $user = User::factory()->unverified()->create();
-
-        $response = $this->getJson($this->verificationUrl($user));
-
-        $response->assertUnauthorized();
     }
 
     #[Test]
@@ -75,7 +63,22 @@ class VerifyEmailTest extends TestCase
             'hash' => 'tampered-hash',
         ]);
 
-        $response = $this->actingAs($user)->getJson($url);
+        $response = $this->getJson($url);
+
+        $response->assertForbidden();
+    }
+
+    #[Test]
+    public function verification_fails_for_nonexistent_user(): void
+    {
+        $user = User::factory()->unverified()->create();
+
+        $url = URL::signedRoute('user.verify', [
+            'id' => 99999,
+            'hash' => sha1($user->getEmailForVerification()),
+        ]);
+
+        $response = $this->getJson($url);
 
         $response->assertForbidden();
     }
@@ -86,8 +89,12 @@ class VerifyEmailTest extends TestCase
         $user = User::factory()->unverified()->create();
         $other = User::factory()->unverified()->create();
 
-        $response = $this->actingAs($other)
-            ->getJson($this->verificationUrl($user));
+        $url = URL::signedRoute('user.verify', [
+            'id' => $other->getKey(),
+            'hash' => sha1($user->getEmailForVerification()),
+        ]);
+
+        $response = $this->getJson($url);
 
         $response->assertForbidden();
     }
