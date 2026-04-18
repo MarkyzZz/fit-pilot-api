@@ -33,7 +33,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('auth')->name('auth.')->group(function () {
         Route::post('logout', LogoutController::class)->name('logout');
-        Route::post('email/resend', ResendVerificationController::class)->name('email.resend');
+        Route::post('email/resend', ResendVerificationController::class)->middleware('throttle:3,5')->name('email.resend');
     });
 
     Route::get('whoami', AuthController::class)->name('whoami');
