@@ -31,6 +31,7 @@ class VerifyEmailTest extends TestCase
             ->assertJsonFragment([
                 'id' => $user->id,
                 'email' => $user->email,
+                'verified' => true,
             ]);
 
         $this->assertNotNull($user->fresh()->email_verified_at);
@@ -48,6 +49,7 @@ class VerifyEmailTest extends TestCase
             ->assertJsonFragment([
                 'id' => $user->id,
                 'email' => $user->email,
+                'verified' => true,
             ]);
 
         $this->assertAuthenticatedAs($user);

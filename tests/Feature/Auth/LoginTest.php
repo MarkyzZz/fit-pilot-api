@@ -32,7 +32,7 @@ class LoginTest extends TestCase
         ]);
 
         $response->assertOk()
-            ->assertJsonStructure(['data' => ['id', 'first_name', 'last_name', 'email']]);
+            ->assertJsonStructure(['data' => ['id', 'first_name', 'last_name', 'email', 'verified']]);
     }
 
     #[Test]
