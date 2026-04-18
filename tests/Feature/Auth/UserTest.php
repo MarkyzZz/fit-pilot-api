@@ -27,10 +27,11 @@ class UserTest extends TestCase
             ->getJson(route('whoami'));
 
         $response->assertOk()
-            ->assertJsonStructure(['data' => ['id', 'first_name', 'last_name', 'email']])
+            ->assertJsonStructure(['data' => ['id', 'first_name', 'last_name', 'email', 'verified']])
             ->assertJsonFragment([
                 'id' => $user->id,
                 'email' => $user->email,
+                'verified' => true,
             ]);
     }
 

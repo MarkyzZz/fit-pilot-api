@@ -3,8 +3,9 @@
 namespace Tests\Feature\Auth;
 
 use App\Models\User;
+use Event;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Notification;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -15,7 +16,7 @@ class RegisterTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        Notification::fake();
+        Event::fake();
     }
 
     #[Test]
@@ -33,6 +34,20 @@ class RegisterTest extends TestCase
             ->assertJsonStructure(['message']);
 
         $this->assertDatabaseHas('users', ['email' => 'john@example.com']);
+    }
+
+    #[Test]
+    public function registered_event_is_dispatched_after_registration(): void
+    {
+        $this->postJson(route('auth.register'), [
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'email' => 'john@example.com',
+            'password' => 'Secret123',
+            'password_confirmation' => 'Secret123',
+        ]);
+
+        Event::assertDispatched(Registered::class);
     }
 
     #[Test]
