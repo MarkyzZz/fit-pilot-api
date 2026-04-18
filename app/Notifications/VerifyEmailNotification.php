@@ -28,12 +28,13 @@ final class VerifyEmailNotification extends VerifyEmail
 
         parse_str(parse_url($backendUrl, PHP_URL_QUERY), $params);
 
-        return config('app.frontend_url') . '/verify-email?' . http_build_query([
-            'id' => $notifiable->getKey(),
-            'hash' => sha1($notifiable->getEmailForVerification()),
-            'expires' => $params['expires'],
-            'signature' => $params['signature'],
-        ]);
+        return config('app.frontend_url')
+            . '/verify-email/' . $notifiable->getKey()
+            . '/' . sha1($notifiable->getEmailForVerification())
+            . '?' . http_build_query([
+                'expires' => $params['expires'],
+                'signature' => $params['signature'],
+            ]);
     }
 
     public function toMail(mixed $notifiable): MailMessage
