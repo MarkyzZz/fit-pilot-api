@@ -29,7 +29,7 @@ class ResendVerificationTest extends TestCase
     }
 
     #[Test]
-    public function already_verified_user_can_resend_verification_email(): void
+    public function already_verified_user_cannot_resend_verification_email(): void
     {
         Notification::fake();
 
@@ -37,10 +37,10 @@ class ResendVerificationTest extends TestCase
 
         $response = $this->actingAs($user)->postJson(route('auth.email.resend'));
 
-        $response->assertOk()
-            ->assertJsonFragment(['message' => 'Verification link sent.']);
+        $response->assertConflict()
+            ->assertJsonFragment(['message' => 'Email already verified.']);
 
-        Notification::assertSentTo($user, VerifyEmailNotification::class);
+        Notification::assertNothingSent();
     }
 
     #[Test]

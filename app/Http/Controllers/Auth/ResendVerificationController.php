@@ -11,6 +11,12 @@ class ResendVerificationController extends Controller
 {
     public function __invoke(Request $request): JsonResponse
     {
+        if ($request->user()->hasVerifiedEmail()) {
+            return response()->json([
+                'message' => 'Email already verified.',
+            ], Response::HTTP_CONFLICT);
+        }
+
         $request->user()->sendEmailVerificationNotification();
 
         return response()->json([
