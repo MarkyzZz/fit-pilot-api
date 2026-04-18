@@ -1,9 +1,10 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
-use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\ResendVerificationController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +33,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('auth')->name('auth.')->group(function () {
         Route::post('logout', LogoutController::class)->name('logout');
+        Route::post('email/resend', ResendVerificationController::class)->name('email.resend');
     });
 
     Route::get('whoami', AuthController::class)->name('whoami');

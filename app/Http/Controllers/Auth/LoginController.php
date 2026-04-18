@@ -24,14 +24,6 @@ class LoginController extends Controller
             ], Response::HTTP_UNAUTHORIZED);
         }
 
-        if (! $request->user('web')->hasVerifiedEmail()) {
-            Auth::guard('web')->logout();
-
-            return $this->response->json([
-                'message' => 'Your email address is not verified.',
-            ], Response::HTTP_FORBIDDEN);
-        }
-
         if ($request->hasSession()) {
             $request->session()->regenerate();
         }
