@@ -28,7 +28,7 @@ final class VerifyEmailNotification extends VerifyEmail
 
         parse_str(parse_url($backendUrl, PHP_URL_QUERY), $params);
 
-        return config('app.frontend_url') . '/auth/verify-email?' . http_build_query([
+        return config('app.frontend_url') . '/verify-email?' . http_build_query([
             'id' => $notifiable->getKey(),
             'hash' => sha1($notifiable->getEmailForVerification()),
             'expires' => $params['expires'],
