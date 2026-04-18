@@ -59,6 +59,25 @@ class LoginTest extends TestCase
     }
 
     #[Test]
+    public function unverified_user_cannot_login(): void
+    {
+        User::factory()->unverified()->create([
+            'email' => 'test@example.com',
+            'password' => 'password',
+        ]);
+
+        $response = $this->postJson(route('auth.login'), [
+            'email' => 'test@example.com',
+            'password' => 'password',
+        ]);
+
+        $response->assertForbidden()
+            ->assertJsonFragment(['message' => 'Your email address is not verified.']);
+
+        $this->assertGuest();
+    }
+
+    #[Test]
     public function login_requires_a_valid_email_format(): void
     {
         $response = $this->postJson(route('auth.login'), [
