@@ -1,4 +1,4 @@
-FROM alpine:3.21
+FROM alpine:3.24
 
 ARG WWWGROUP=1001
 ARG WWWUSER=1001
@@ -20,35 +20,35 @@ RUN apk add --no-cache \
     nginx
 
 # ──────────────────────────────────────────────
-# PHP 8.4 — only what's needed
+# PHP 8.5 — only what's needed
 # ──────────────────────────────────────────────
 RUN apk add --no-cache \
-    php84 \
-    php84-fpm \
-    php84-pgsql \
-    php84-pdo \
-    php84-pdo_pgsql \
-    php84-sqlite3 \
-    php84-pdo_sqlite \
-    php84-redis \
-    php84-gd \
-    php84-curl \
-    php84-mbstring \
-    php84-xml \
-    php84-zip \
-    php84-bcmath \
-    php84-intl \
-    php84-openssl \
-    php84-tokenizer \
-    php84-phar \
-    php84-dom \
-    php84-xmlwriter \
-    php84-xmlreader \
-    php84-ctype \
-    php84-fileinfo \
-    php84-session \
-    php84-simplexml \
-    && ln -sf /usr/bin/php84 /usr/bin/php
+    php85 \
+    php85-fpm \
+    php85-pgsql \
+    php85-pdo \
+    php85-pdo_pgsql \
+    php85-sqlite3 \
+    php85-pdo_sqlite \
+    php85-redis \
+    php85-gd \
+    php85-curl \
+    php85-mbstring \
+    php85-xml \
+    php85-zip \
+    php85-bcmath \
+    php85-intl \
+    php85-openssl \
+    php85-tokenizer \
+    php85-phar \
+    php85-dom \
+    php85-xmlwriter \
+    php85-xmlreader \
+    php85-ctype \
+    php85-fileinfo \
+    php85-session \
+    php85-simplexml \
+    && ln -sf /usr/bin/php85 /usr/bin/php
 
 # ──────────────────────────────────────────────
 # Composer
@@ -82,9 +82,9 @@ RUN chmod u+s /sbin/su-exec
 # ──────────────────────────────────────────────
 COPY start-container /usr/local/bin/start-container
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-COPY php.ini /etc/php84/conf.d/99-fp.ini
+COPY php.ini /etc/php85/conf.d/99-fp.ini
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY php-fpm.conf /etc/php84/php-fpm.d/www.conf
+COPY php-fpm.conf /etc/php85/php-fpm.d/www.conf
 RUN chmod 755 /usr/local/bin/start-container
 
 EXPOSE 80/tcp

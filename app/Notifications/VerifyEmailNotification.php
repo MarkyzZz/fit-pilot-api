@@ -12,8 +12,7 @@ use Illuminate\Support\Facades\URL;
 final class VerifyEmailNotification extends VerifyEmail
 {
     /**
-     * @param MustVerifyEmail $notifiable
-     * @return string
+     * @param  MustVerifyEmail  $notifiable
      */
     protected function verificationUrl(mixed $notifiable): string
     {
@@ -29,10 +28,10 @@ final class VerifyEmailNotification extends VerifyEmail
         parse_str(parse_url($backendUrl, PHP_URL_QUERY), $params);
 
         return config('app.frontend_url')
-            . '/authentication'
-            . '/verify-email/' . $notifiable->getKey()
-            . '/' . sha1($notifiable->getEmailForVerification())
-            . '?' . http_build_query([
+            .'/authentication'
+            .'/verify-email/'.$notifiable->getKey()
+            .'/'.sha1($notifiable->getEmailForVerification())
+            .'?'.http_build_query([
                 'expires' => $params['expires'],
                 'signature' => $params['signature'],
             ]);

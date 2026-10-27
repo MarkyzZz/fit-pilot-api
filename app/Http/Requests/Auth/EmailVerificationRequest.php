@@ -12,7 +12,7 @@ class EmailVerificationRequest extends FormRequest
     {
         $user = User::find($this->route('id'));
 
-        return match(true) {
+        return match (true) {
             ! $user => false,
             ! hash_equals((string) $user->getKey(), (string) $this->route('id')) => false,
             ! hash_equals(sha1($user->getEmailForVerification()), (string) $this->route('hash')) => false,
