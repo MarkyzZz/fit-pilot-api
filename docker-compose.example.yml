@@ -2,7 +2,7 @@ services:
     fp-api:
         container_name: fp-api
         build:
-            context: ./docker/8.4
+            context: ./docker/8.5
             dockerfile: Dockerfile
             args:
                 WWWUSER: '${WWWUSER}'
