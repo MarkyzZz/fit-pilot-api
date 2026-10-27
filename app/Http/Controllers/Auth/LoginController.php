@@ -12,9 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class LoginController extends Controller
 {
-    public function __construct(readonly private ResponseFactory $response)
-    {
-    }
+    public function __construct(private readonly ResponseFactory $response) {}
 
     public function __invoke(LoginRequest $request): AuthResource|JsonResponse
     {

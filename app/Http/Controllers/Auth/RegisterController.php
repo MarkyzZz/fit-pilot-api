@@ -18,7 +18,7 @@ class RegisterController extends Controller
         event(new Registered($user));
 
         return response()->json([
-            'message' => 'Registration successful. Please check your email to verify your account.'
+            'message' => 'Registration successful. Please check your email to verify your account.',
         ], Response::HTTP_CREATED);
     }
 }
