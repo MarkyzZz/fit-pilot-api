@@ -18,5 +18,12 @@ use Illuminate\Database\Eloquent\Model;
 ])]
 class Exercise extends Model
 {
-    //
+    protected function casts(): array
+    {
+        return [
+            'primary_muscles' => 'array',
+            'secondary_muscles' => 'array',
+            'instructions' => 'array',
+        ];
+    }
 }
