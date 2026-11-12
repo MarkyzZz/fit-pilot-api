@@ -11,15 +11,16 @@ return new class extends Migration {
             $table->id();
 
             $table->string('name');
-            $table->string('force');
+            $table->string('force')->default('');
             $table->string('level');
-            $table->string('mechanic');
-            $table->string('equipment');
+            $table->string('mechanic')->default('');
+            $table->string('equipment')->default('');
             $table->string('category');
 
             $table->jsonb('primary_muscles')->default('[]');
             $table->jsonb('secondary_muscles')->default('[]');
             $table->jsonb('instructions')->default('[]');
+
             $table->timestamps();
         });
     }
