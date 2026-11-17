@@ -13,7 +13,7 @@ class ExerciseSearchController extends Controller
      */
     public function __invoke(ExerciseSearchRequest $request)
     {
-        $exercises = Exercise::query();
+        $exercises = Exercise::query()->get();
 
         return ExerciseSearchResource::collection($exercises);
     }
