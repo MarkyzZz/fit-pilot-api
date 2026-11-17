@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\File;
  */
 class ExerciseFactory extends Factory
 {
+    protected $model = Exercise::class;
+
     /**
      * @var array<int, array<string, mixed>>|null
      */

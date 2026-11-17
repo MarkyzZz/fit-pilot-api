@@ -2,6 +2,7 @@
 
 namespace Feature;
 
+use App\Models\Exercise;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
@@ -15,8 +16,7 @@ class ExerciseSearchTest extends TestCase
     {
         parent::setUp();
 
-        $this->seed();
-
+        Exercise::factory()->count(10)->create();
     }
 
     #[Test]
