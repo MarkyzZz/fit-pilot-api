@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResendVerificationController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\ExerciseSearchController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,5 +38,14 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::get('whoami', AuthController::class)->name('whoami');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Exercises
+    |--------------------------------------------------------------------------
+    */
+    Route::get('exercises', ExerciseSearchController::class)
+        ->name('exercises.search');
 
 });
